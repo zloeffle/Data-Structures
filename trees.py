@@ -22,7 +22,6 @@ class BinaryTree:
             curr = node
         
         if not self.hasChildren(curr):
-            print(curr.data)
             return None
         print(curr.data, [curr.left.data, curr.right.data])
         
@@ -160,7 +159,8 @@ if __name__ == '__main__':
     print('Binary Tree')
     data = [5, 6, 3, 2, 4, 8, 7]
     bt = BinaryTree()
-    
+    bt.print_tree()
+
     print('Binary Search Tree')
     bst = BST()
     bst.build(data)
