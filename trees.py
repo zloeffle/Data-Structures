@@ -7,30 +7,13 @@ class Node:
 '''
 Binary Tree
 - each node has at most 2 children
+- uses: find name in phone book, sorted tree traversal, next closest elem, find all elems less or greater than a key
+
 '''
 class BinaryTree:
     def __init__(self):
         self.root = None
-        
-    def build(self, data):
-        for val in data:
-            self.insert(val)
-        
-    def print_tree(self, node=None):
-        curr = self.root
-        if node:
-            curr = node
-        
-        if not self.hasChildren(curr):
-            return None
-        print(curr.data, [curr.left.data, curr.right.data])
-        
-        if self.hasChildren(curr.left):
-            self.print_tree(curr.left)
-        if self.hasChildren(curr.right):
-            self.print_tree(curr.right)
-            
-            
+        self.tree = None
             
     def get_children(self, node):
         children = []
@@ -50,64 +33,115 @@ class BinaryTree:
                 return True
         return False
     
-    def insert(self, data):
-        newNode = Node(data) # new node
-        if self.root is None:
-            self.root = newNode
-            return self.root
+    def build(self, data):
+        root = Node(data.pop(0))
+        self.root = root
         
+        n = len(data)-1
         curr = self.root
-        while curr.left and curr.right:
-            left = curr.left
-            right = curr.right
-            
-            if not self.isFull(left):
-                curr = left
-            elif not self.isFull(right):
-                curr = right
+        index = 0
+        x,y = 0,1
+        tree = [curr]
+        while index <= n:            
+            # left child
+            if index + x <= n:
+                curr.left = Node(data[index + x])
             else:
-                curr = left.left
+                curr.left = None
+            # right child
+            if index + y <= n:
+                curr.right = Node(data[index + y])
+            else:
+                curr.right = None
+                    
+            # update curr node
+            
+            curr = Node(data[index])
+            tree.append(curr)
+            
+            index += 1
+            x += 1
+            y += 1
+    
+        self.tree = tree
+        return tree
+    
+    def search(self, key):
+        tree = self.tree
+        for node in tree:
+            if node.data == key:
+                return node
+            if node.left:
+                if node.left.data == key:
+                    return node.left
+            if node.right:
+                if node.right.data == key:
+                    return node.right
+        return None
+            
         
-        if not curr.left:
-            curr.left = newNode
-            return curr.left
-        if not curr.right:
-            curr.right = newNode
-            return curr.right
+    
+    def insert(self, data):
+        newNode = Node(data)
+        tree = self.tree
+        
+        for node in tree:
+            if self.isFull(node):
+                continue
+            else:
+                if not node.left:
+                    node.left = newNode
+                    break
+                if not node.right:
+                    node.right = newNode
+                    break
+        tree.append(newNode)
+        self.tree = tree
+                
 
-    def delete(self, node):
-        pass
-
-    def search(self, node):
-        pass
+    def delete(self, key):
+        tree = self.tree
+        target = self.search(key)
+        deepest = tree.pop()
+        if target:
+            for node in tree:
+                if node == target:
+                    node.data = deepest.data
+                    break
+            self.tree = tree
+        else:
+            print('node not found')
+        
+        
+    def print_tree(self):
+        tree = self.tree
+        
+        for node in tree:
+            left = node.left
+            right = node.right
+            
+            if left:
+                left = left.data
+            else:
+                left = None
+            if right:
+                right = right.data
+            else:
+                right = None
+            
+            print(node.data, [left,right])
+        
+        
 
 '''
 Binary Search Tree
 - left child of each node is <= to that nodes value
 - right child of each node is >= to that nodes value
+- uses: data needs to be sorted, search for a range of values
 '''
 class BST:
     def __init__(self):
-        self.root = None
-        
-    def build(self, data):
-        for val in data:
-            self.insert(val)
-
-    def print_tree(self, node=None):
-        curr = self.root
-        if node:
-            curr = node
-        
-        if not self.hasChildren(curr):
-            print(curr.data)
-            return None
-        print(curr.data, [curr.left.data, curr.right.data])
-        
-        if self.hasChildren(curr.left):
-            self.print_tree(curr.left)
-        if self.hasChildren(curr.right):
-            self.print_tree(curr.right)   
+        self.root = None  
     
     def get_children(self, node):
         children = []
@@ -127,43 +161,35 @@ class BST:
                 return True
         return False
     
+    def build(self, data):
+        pass
+    
     def insert(self, data):
-        newNode = Node(data)
-        if self.root is None:
-            self.root = newNode
-            return self.root
-        
-        curr = self.root
-        while 1:
-            if newNode.data < curr.data:
-                if curr.left:
-                    curr = curr.left
-                else:
-                    curr.left = newNode
-                    break
-            else:
-                if curr.right:
-                    curr = curr.right
-                else:
-                    curr.right = newNode
-                    break
+        pass
                 
-
     def delete(self, node):
         pass
 
     def search(self, node):
+        pass
+    
+    def print_tree(self, node=None):
         pass
 
 if __name__ == '__main__':
     print('Binary Tree')
     data = [5, 6, 3, 2, 4, 8, 7]
     bt = BinaryTree()
+    bt.build(data)
     bt.print_tree()
-
-    print('Binary Search Tree')
-    bst = BST()
-    bst.build(data)
+    bt.insert(12)
+    print()
+    bt.print_tree()
     
+    print()
+    bt.delete(6)
+    bt.print_tree()
+    
+    print('Binary Search Tree')
     
 

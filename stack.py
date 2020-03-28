@@ -1,7 +1,7 @@
 
 '''
 Stack LIFO
-- Uses: rexpression eval, correct path in maze
+- Uses: expression eval, syntax parsing, correct path in maze
 '''
 class Stack:
     def __init__(self):

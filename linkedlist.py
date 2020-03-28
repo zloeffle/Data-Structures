@@ -99,13 +99,7 @@ class CircularLinkedList:
         pass
 
     def print_list(self):
-        if self.head.next is None:
-            print(self.head.data)
-        else:
-            curr = self.head
-            while curr.next:
-                print(curr.data)
-                curr = curr.next
+        pass
 
 if __name__ == '__main__':
     data = [1,3,7,4,9]

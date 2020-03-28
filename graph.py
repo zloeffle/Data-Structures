@@ -1,6 +1,6 @@
 '''
 Graph
-- Uses: shortest path/optimal route, solving mazes
+- Uses: networks, shortest path/optimal route, solving mazes
 '''
 class Graph:
     def __init__(self):
