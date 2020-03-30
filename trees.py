@@ -55,7 +55,6 @@ class BinaryTree:
                 curr.right = None
                     
             # update curr node
-            
             curr = Node(data[index])
             tree.append(curr)
             
