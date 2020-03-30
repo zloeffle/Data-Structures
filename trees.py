@@ -176,19 +176,29 @@ class BST:
         pass
 
 if __name__ == '__main__':
-    print('Binary Tree')
+    print('BINARY TREE')
     data = [5, 6, 3, 2, 4, 8, 7]
     bt = BinaryTree()
+    
+    # build test
+    print('Build Test')
     bt.build(data)
     bt.print_tree()
+
+    # search test
+    print('\nSearch Test')
+    print(bt.search(6))
+
+    # insert test
+    print('\nInsert Test')
     bt.insert(12)
-    print()
     bt.print_tree()
+
+    # delete test
+    print('\nDelete Test')
+    #bt.delete(6)
+    #bt.print_tree()
     
-    print()
-    bt.delete(6)
-    bt.print_tree()
-    
-    print('Binary Search Tree')
+    print('\nBINARY SEARCH TREE')
     
 
