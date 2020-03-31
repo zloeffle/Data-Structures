@@ -21,6 +21,19 @@ class BinaryTree:
         children.append(node.right)
         return children
     
+    def get_parent(self, key):
+        parent = None
+        for node in self.tree:
+            if node.left:
+                if node.left.data == key:
+                    parent = node
+            if node.right:
+                if node.right.data == key:
+                    parent = node
+        return parent
+                
+            
+    
     def hasChildren(self, node):
         if node:
             if node.left or node.right:
@@ -100,16 +113,48 @@ class BinaryTree:
 
     def delete(self, key):
         tree = self.tree
-        target = self.search(key)
+        target = None
+        
+        # remove deepest node in the tree
         deepest = tree.pop()
+        parent = self.get_parent(deepest.data)
+        parent = tree[tree.index(parent)]
+        if parent.left == deepest:
+            parent.left = None
+        if parent.right == deepest:
+            parent.right = None
+        
+        # search the tree for the node to be deleted
+        for node in tree:
+            if node.data == key:
+                target = node
+                
         if target:
-            for node in tree:
-                if node == target:
-                    node.data = deepest.data
-                    break
+            parent = self.get_parent(target.data) # parent of target node
+            parentIndx = tree.index(parent)
+            left = target.left # left child of target
+            right = target.right # right child of target
+            targetIndx = tree.index(target) # index of target node
+            
+            tree[targetIndx] = deepest # replace target node with deepest node
+            target = tree[targetIndx]
+            parent = tree[parentIndx]
+            
+            # update children of parent of deleted node
+            if parent.left:
+                if parent.left.data == key:
+                    parent.left = target
+            if parent.right:
+                if parent.right.data == key:
+                    parent.right = target
+            
+            # update children of deleted node
+            target.left = left
+            target.right = right
+            
             self.tree = tree
-        else:
-            print('node not found')
+        else:       
+            print('Node not found')
         
         
     def print_tree(self):
@@ -140,7 +185,8 @@ Binary Search Tree
 '''
 class BST:
     def __init__(self):
-        self.root = None  
+        self.root = None
+        self.tree = []
     
     def get_children(self, node):
         children = []
@@ -148,6 +194,17 @@ class BST:
         children.append(node.right)
         return children
     
+    def get_parent(self, key):
+        parent = None
+        for node in self.tree:
+            if node.left:
+                if node.left.data == key:
+                    parent = node
+            if node.right:
+                if node.right.data == key:
+                    parent = node
+        return parent
+                
     def hasChildren(self, node):
         if node:
             if node.left or node.right:
@@ -161,30 +218,64 @@ class BST:
         return False
     
     def build(self, data):
+        data.sort()
+        n = len(data)
+        mid = n // 2
+        self.root = Node(data.pop(mid))   
+        curr = self.root
+        
+        left = data[0:mid]
+        print(left)
+        while len(left) > 1:
+            mid = len(left) // 2
+            newNode = Node(left.pop(mid))
+            if newNode.data < curr.data:    
+                
+        
+        
+    def search(self, key):
         pass
     
     def insert(self, data):
-        pass
+        newNode = Node(data)
+        tree = self.tree
                 
-    def delete(self, node):
+    def delete(self, key):
         pass
-
-    def search(self, node):
-        pass
-    
-    def print_tree(self, node=None):
-        pass
+        
+    def print_tree(self):
+        tree = self.tree
+        
+        for node in tree:
+            left = node.left
+            right = node.right
+            
+            if left:
+                left = left.data
+            else:
+                left = None
+            if right:
+                right = right.data
+            else:
+                right = None
+            
+            print(node.data, [left,right])
 
 if __name__ == '__main__':
     print('BINARY TREE')
     data = [5, 6, 3, 2, 4, 8, 7]
+    print(data)
     bt = BinaryTree()
     
     # build test
-    print('Build Test')
+    print('\nBuild Test')
     bt.build(data)
     bt.print_tree()
-
+    
+    # get_parent test
+    print('\nGet Parent Test')
+    print(bt.get_parent(6).data)
+    
     # search test
     print('\nSearch Test')
     print(bt.search(6))
@@ -196,9 +287,29 @@ if __name__ == '__main__':
 
     # delete test
     print('\nDelete Test')
-    #bt.delete(6)
-    #bt.print_tree()
+    bt.print_tree()
+    bt.delete(6)
+    print()
+    bt.print_tree()
     
     print('\nBINARY SEARCH TREE')
+    data = [5, 6, 3, 2, 4, 8, 7, 9, 10]
+    bst = BST()
+    data.sort()
+    print(data)
+    
+    # build test
+    print('\nBuild Test')
+    bst.build(data)
+   
+    # search test
+    print('\nSearch Test')
     
 
+    # insert test
+    print('\nInsert Test')
+    
+
+    # delete test
+    print('\nDelete Test')
+    
